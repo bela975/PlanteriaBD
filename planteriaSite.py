@@ -70,15 +70,19 @@ def select_data(table):
 
 #interface
 #vamo deixar esse site mais bonitinho
+
 st.set_page_config(page_title = "Planteria Oficial", page_icon=":tada:", layout= "wide")
 st.title("Planteria")
 st.subheader("a melhor loja de plantas do planeta")
 pages = st.sidebar.selectbox("Selecione a Página", ("Menu Principal","Operações"))
 if pages =="Menu Principal":
-    st.write("🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲🌲")
+    st.write("R. do Futuro, 177 - Graças, Recife - PE, 52050-005")
 elif pages == "Operações":
     operation = st.sidebar.selectbox("Selecione a operação", ("Inserir", "Deletar", "Atualizar", "Select"))
     table = st.sidebar.selectbox("Selecione a tabela para alterar", ("pessoa", "funcionario", "cliente", "servico", "produto", "pedido","pagamento_pedido"))
+
+
+
 
 #efetuando as operações
 
@@ -96,6 +100,7 @@ elif pages == "Operações":
             if st.button("Inserir"):
                 insert_data(table, (CPF_pessoa, nome_pessoa,email_pessoa,CEP_pessoa,
                 bairro_pessoa,rua_pessoa,numero_rua_pessoa,complentento_pessoa))
+                st.success(f'Dados inseridos em {table}.')
         
 
         elif table == "funcionario":
@@ -106,6 +111,7 @@ elif pages == "Operações":
 
             if st.button("Inserir"):
                 insert_data(table, (CPF_funcionario,salario_funcionario,data_contratação_funcionario,frequencia_funcionario))
+                st.success(f'Dados inseridos em {table}.')
         
 
         elif table == "cliente":
@@ -113,6 +119,7 @@ elif pages == "Operações":
 
             if st.button("Inserir"):
                 insert_data(table, (CPF_cliente))
+                st.success(f'Dados inseridos em {table}.')
 
 
         elif table == "servico":
@@ -124,6 +131,7 @@ elif pages == "Operações":
 
             if st.button("Inserir"):
                 insert_data(table, (custo_servico,descricao_servico,data_entrega_servico,data_recebimento_servico,id_servico))
+                st.success(f'Dados inseridos em {table}.')
 
         elif table == "produto":
             id_produto = st.number_input("id produto", max_value=9999)
@@ -133,6 +141,7 @@ elif pages == "Operações":
 
             if st.button("Inserir"):
                 insert_data(table, (id_produto,categoria_produto,preco_produto,qnt_exemplares_produto))
+                st.success(f'Dados inseridos em {table}.')
                 
                 
         elif table =="pedido":
@@ -142,6 +151,7 @@ elif pages == "Operações":
 
             if st.button("Inserir"):
                 insert_data(table, (CPF_comprador_pedido,id_pedido,id_produto_pedido))
+                st.success(f'Dados inseridos em {table}.')
 
         elif table == "pagamento_pedido":
             id_pagamento = st.number_input("id pagamento",max_value=999999)
@@ -151,6 +161,7 @@ elif pages == "Operações":
 
             if st.button("Inserir"):
                 insert_data(table, (id_pagamento,data_compra_pagamento,preco_total_pagamento,quantidade_pagamento))
+                st.success(f'Dados inseridos em {table}.')
         
 
 
@@ -160,6 +171,8 @@ elif pages == "Operações":
             CPF_pessoa = st.number_input("CPF da pessoa a ser deletada", min_value=0)
             if st.button("Deletar"):
                 delete_data(table, "CPF_pessoa", CPF_pessoa)
+                st.success(f'pessoa deletada de {table} com sucesso.')
+            
 
     elif operation == "Atualizar":
         if table == "pessoa":
@@ -167,18 +180,22 @@ elif pages == "Operações":
             novo_nome = st.text_input("Novo Nome da Pessoa")
             if st.button("Atualizar"):
                 update_data(table, "nome", novo_nome, "CPF_pessoa", CPF_pessoa)
-                
+                st.success(f'atualizado de {table} com sucesso.')
+
     elif operation == 'Select':
         if table == "pessoa":
             data = select_data(table)
             st.write("Dados da tabela pessoa:")
             df = pd.DataFrame(data, columns=["CPF", "nome"])
             st.dataframe(df.set_index('CPF'), width=800)
+            st.success(f'selecionado de {table} com sucesso.')
+            
         if table == 'aluno':
             data = select_data(table)
             st.write("Dados da tabela Aluno:")
             df = pd.DataFrame(data, columns=["Matrícula do aluno", "Nota do vestibular", "Codigo do curso"])
             st.dataframe(df.set_index('Matrícula do aluno'), width=800)
+
         if table == 'busca - créditos totais':
             matricula_aluno = st.number_input("Matrícula do aluno", min_value=0)
             if st.button("Buscar"):
